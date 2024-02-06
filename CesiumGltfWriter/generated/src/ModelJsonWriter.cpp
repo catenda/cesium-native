@@ -24,6 +24,8 @@
 #include <CesiumGltf/EnumValue.h>
 #include <CesiumGltf/ExtensionBufferExtMeshoptCompression.h>
 #include <CesiumGltf/ExtensionBufferViewExtMeshoptCompression.h>
+#include <CesiumGltf/ExtensionCatendaMetadataObjectMetadata.h>
+#include <CesiumGltf/ExtensionCatendaMetadataObjectMetadataAttribute.h>
 #include <CesiumGltf/ExtensionCesiumRTC.h>
 #include <CesiumGltf/ExtensionCesiumTileEdges.h>
 #include <CesiumGltf/ExtensionExtInstanceFeatures.h>
@@ -49,6 +51,7 @@
 #include <CesiumGltf/ExtensionKhrTextureTransform.h>
 #include <CesiumGltf/ExtensionMeshPrimitiveExtFeatureMetadata.h>
 #include <CesiumGltf/ExtensionMeshPrimitiveExtStructuralMetadata.h>
+#include <CesiumGltf/ExtensionModelCatendaMetadata.h>
 #include <CesiumGltf/ExtensionModelExtFeatureMetadata.h>
 #include <CesiumGltf/ExtensionModelExtStructuralMetadata.h>
 #include <CesiumGltf/ExtensionModelMaxarMeshVariants.h>
@@ -177,6 +180,21 @@ void writeJson(
 
 void writeJson(
     const CesiumGltf::ExtensionTextureWebp& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context);
+
+void writeJson(
+    const CesiumGltf::ExtensionModelCatendaMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context);
+
+void writeJson(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context);
+
+void writeJson(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute& obj,
     CesiumJsonWriter::JsonWriter& jsonWriter,
     const CesiumJsonWriter::ExtensionWriterContext& context);
 
@@ -1023,6 +1041,60 @@ void writeJson(
     jsonWriter.Key("source");
     writeJson(obj.source, jsonWriter, context);
   }
+
+  writeExtensibleObject(obj, jsonWriter, context);
+
+  jsonWriter.EndObject();
+}
+
+void writeJson(
+    const CesiumGltf::ExtensionModelCatendaMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  jsonWriter.StartObject();
+
+  if (!obj.objects.empty()) {
+    jsonWriter.Key("objects");
+    writeJson(obj.objects, jsonWriter, context);
+  }
+
+  writeExtensibleObject(obj, jsonWriter, context);
+
+  jsonWriter.EndObject();
+}
+
+void writeJson(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  jsonWriter.StartObject();
+
+  if (obj.parentId.has_value()) {
+    jsonWriter.Key("parentId");
+    writeJson(obj.parentId, jsonWriter, context);
+  }
+
+  if (!obj.attributes.empty()) {
+    jsonWriter.Key("attributes");
+    writeJson(obj.attributes, jsonWriter, context);
+  }
+
+  writeExtensibleObject(obj, jsonWriter, context);
+
+  jsonWriter.EndObject();
+}
+
+void writeJson(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  jsonWriter.StartObject();
+
+  jsonWriter.Key("type");
+  writeJson(obj.type, jsonWriter, context);
+
+  jsonWriter.Key("value");
+  writeJson(obj.value, jsonWriter, context);
 
   writeExtensibleObject(obj, jsonWriter, context);
 
@@ -2942,6 +3014,27 @@ void ExtensionKhrTextureTransformJsonWriter::write(
 
 void ExtensionTextureWebpJsonWriter::write(
     const CesiumGltf::ExtensionTextureWebp& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  writeJson(obj, jsonWriter, context);
+}
+
+void ExtensionModelCatendaMetadataJsonWriter::write(
+    const CesiumGltf::ExtensionModelCatendaMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  writeJson(obj, jsonWriter, context);
+}
+
+void ExtensionCatendaMetadataObjectMetadataJsonWriter::write(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadata& obj,
+    CesiumJsonWriter::JsonWriter& jsonWriter,
+    const CesiumJsonWriter::ExtensionWriterContext& context) {
+  writeJson(obj, jsonWriter, context);
+}
+
+void ExtensionCatendaMetadataObjectMetadataAttributeJsonWriter::write(
+    const CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute& obj,
     CesiumJsonWriter::JsonWriter& jsonWriter,
     const CesiumJsonWriter::ExtensionWriterContext& context) {
   writeJson(obj, jsonWriter, context);

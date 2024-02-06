@@ -28,6 +28,9 @@ struct ExtensionModelMaxarMeshVariants;
 struct ExtensionNodeMaxarMeshVariants;
 struct ExtensionKhrTextureTransform;
 struct ExtensionTextureWebp;
+struct ExtensionModelCatendaMetadata;
+struct ExtensionCatendaMetadataObjectMetadata;
+struct ExtensionCatendaMetadataObjectMetadataAttribute;
 struct ExtensionNodeMaxarMeshVariantsMappingsValue;
 struct ExtensionModelMaxarMeshVariantsValue;
 struct ExtensionExtStructuralMetadataPropertyAttribute;
@@ -286,6 +289,35 @@ struct ExtensionTextureWebpJsonWriter {
 
   static void write(
       const CesiumGltf::ExtensionTextureWebp& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
+struct ExtensionModelCatendaMetadataJsonWriter {
+  using ValueType = CesiumGltf::ExtensionModelCatendaMetadata;
+
+  static inline constexpr const char* ExtensionName = "CATENDA_metadata";
+
+  static void write(
+      const CesiumGltf::ExtensionModelCatendaMetadata& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
+struct ExtensionCatendaMetadataObjectMetadataJsonWriter {
+  using ValueType = CesiumGltf::ExtensionCatendaMetadataObjectMetadata;
+
+  static void write(
+      const CesiumGltf::ExtensionCatendaMetadataObjectMetadata& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
+struct ExtensionCatendaMetadataObjectMetadataAttributeJsonWriter {
+  using ValueType = CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute;
+
+  static void write(
+      const CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute& obj,
       CesiumJsonWriter::JsonWriter& jsonWriter,
       const CesiumJsonWriter::ExtensionWriterContext& context);
 };
