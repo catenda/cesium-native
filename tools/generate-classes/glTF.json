@@ -131,6 +131,15 @@
     },
     "CESIUM_primitive_outline glTF primitive extension": {
       "overrideName": "ExtensionCesiumPrimitiveOutline"
+    },
+    "CATENDA_metadata glTF extension": {
+      "overrideName": "ExtensionModelCatendaMetadata"
+    },
+    "Object Metadata in CATENDA_metadata": {
+      "overrideName": "ExtensionCatendaMetadataObjectMetadata"
+    },
+    "Object Metadata Attribute in CATENDA_metadata": {
+      "overrideName": "ExtensionCatendaMetadataObjectMetadataAttribute"
     }
   },
   "extensions": [
@@ -227,6 +236,13 @@
       "schema": "Vendor/CESIUM_primitive_outline/schema/primitive.CESIUM_primitive_outline.schema.json",
       "attachTo": [
         "mesh.primitive"
+      ]
+    },
+    {
+      "extensionName": "CATENDA_metadata",
+      "schema": "Vendor/CATENDA_metadata/schema/gltf.CATENDA_metadata.schema.json",
+      "attachTo": [
+        "glTF"
       ]
     }
   ]
