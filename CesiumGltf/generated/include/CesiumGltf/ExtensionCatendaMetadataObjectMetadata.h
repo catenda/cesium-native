@@ -26,6 +26,11 @@ struct CESIUMGLTF_API ExtensionCatendaMetadataObjectMetadata final
   std::optional<std::string> parentId;
 
   /**
+   * @brief Name of the object type.
+   */
+  std::optional<std::string> objectType;
+
+  /**
    * @brief A dictionary of all attributes for the current object, where the key
    * is the id of the attribute.
    */

@@ -1272,6 +1272,7 @@ ExtensionCatendaMetadataObjectMetadataJsonHandler::
         const CesiumJsonReader::ExtensionReaderContext& context) noexcept
     : CesiumJsonReader::ExtensibleObjectJsonHandler(context),
       _parentId(),
+      _objectType(),
       _attributes(context) {}
 
 void ExtensionCatendaMetadataObjectMetadataJsonHandler::reset(
@@ -1301,6 +1302,8 @@ ExtensionCatendaMetadataObjectMetadataJsonHandler::
 
   if ("parentId"s == str)
     return property("parentId", this->_parentId, o.parentId);
+  if ("objectType"s == str)
+    return property("objectType", this->_objectType, o.objectType);
   if ("attributes"s == str)
     return property("attributes", this->_attributes, o.attributes);
 

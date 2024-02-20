@@ -1074,6 +1074,11 @@ void writeJson(
     writeJson(obj.parentId, jsonWriter, context);
   }
 
+  if (obj.objectType.has_value()) {
+    jsonWriter.Key("objectType");
+    writeJson(obj.objectType, jsonWriter, context);
+  }
+
   if (!obj.attributes.empty()) {
     jsonWriter.Key("attributes");
     writeJson(obj.attributes, jsonWriter, context);

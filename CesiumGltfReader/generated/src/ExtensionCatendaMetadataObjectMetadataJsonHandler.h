@@ -36,6 +36,7 @@ protected:
 private:
   CesiumGltf::ExtensionCatendaMetadataObjectMetadata* _pObject = nullptr;
   CesiumJsonReader::StringJsonHandler _parentId;
+  CesiumJsonReader::StringJsonHandler _objectType;
   CesiumJsonReader::DictionaryJsonHandler<
       CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute,
       ExtensionCatendaMetadataObjectMetadataAttributeJsonHandler>
