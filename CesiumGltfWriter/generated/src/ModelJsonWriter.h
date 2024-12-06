@@ -4,20 +4,20 @@
 
 // forward declarations
 namespace CesiumJsonWriter {
-class JsonWriter;
-class ExtensionWriterContext;
+  class JsonWriter;
+  class ExtensionWriterContext;
 } // namespace CesiumJsonWriter
 
 // forward declarations
 namespace CesiumGltf {
-struct ExtensionCesiumRTC;
+  struct ExtensionCesiumRTC;
 struct ExtensionCesiumTileEdges;
 struct ExtensionExtInstanceFeatures;
 struct ExtensionExtMeshFeatures;
 struct ExtensionExtMeshGpuInstancing;
 struct ExtensionBufferExtMeshoptCompression;
 struct ExtensionBufferViewExtMeshoptCompression;
-struct ExtensionModelExtStructuralMetadata;
+struct EXT_structural_metadataGlTFDocumentExtension;
 struct ExtensionMeshPrimitiveExtStructuralMetadata;
 struct ExtensionKhrDracoMeshCompression;
 struct ExtensionKhrMaterialsUnlit;
@@ -29,6 +29,9 @@ struct ExtensionNodeMaxarMeshVariants;
 struct ExtensionKhrTextureTransform;
 struct ExtensionTextureWebp;
 struct ExtensionCesiumPrimitiveOutline;
+struct ExtensionModelCatendaMetadata;
+struct ExtensionCatendaMetadataObjectMetadata;
+struct ExtensionCatendaMetadataObjectMetadataAttribute;
 struct ExtensionNodeMaxarMeshVariantsMappingsValue;
 struct ExtensionModelMaxarMeshVariantsValue;
 struct ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValue;
@@ -156,13 +159,13 @@ struct ExtensionBufferViewExtMeshoptCompressionJsonWriter {
       const CesiumJsonWriter::ExtensionWriterContext& context);
 };
 
-struct ExtensionModelExtStructuralMetadataJsonWriter {
-  using ValueType = CesiumGltf::ExtensionModelExtStructuralMetadata;
+struct EXT_structural_metadataGlTFDocumentExtensionJsonWriter {
+  using ValueType = CesiumGltf::EXT_structural_metadataGlTFDocumentExtension;
 
   static constexpr const char* ExtensionName = "EXT_structural_metadata";
 
   static void write(
-      const CesiumGltf::ExtensionModelExtStructuralMetadata& obj,
+      const CesiumGltf::EXT_structural_metadataGlTFDocumentExtension& obj,
       CesiumJsonWriter::JsonWriter& jsonWriter,
       const CesiumJsonWriter::ExtensionWriterContext& context);
 };
@@ -288,6 +291,35 @@ struct ExtensionCesiumPrimitiveOutlineJsonWriter {
       const CesiumJsonWriter::ExtensionWriterContext& context);
 };
 
+struct ExtensionModelCatendaMetadataJsonWriter {
+  using ValueType = CesiumGltf::ExtensionModelCatendaMetadata;
+
+  static constexpr const char* ExtensionName = "CATENDA_metadata";
+
+  static void write(
+      const CesiumGltf::ExtensionModelCatendaMetadata& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
+struct ExtensionCatendaMetadataObjectMetadataJsonWriter {
+  using ValueType = CesiumGltf::ExtensionCatendaMetadataObjectMetadata;
+
+  static void write(
+      const CesiumGltf::ExtensionCatendaMetadataObjectMetadata& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
+struct ExtensionCatendaMetadataObjectMetadataAttributeJsonWriter {
+  using ValueType = CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute;
+
+  static void write(
+      const CesiumGltf::ExtensionCatendaMetadataObjectMetadataAttribute& obj,
+      CesiumJsonWriter::JsonWriter& jsonWriter,
+      const CesiumJsonWriter::ExtensionWriterContext& context);
+};
+
 struct ExtensionNodeMaxarMeshVariantsMappingsValueJsonWriter {
   using ValueType = CesiumGltf::ExtensionNodeMaxarMeshVariantsMappingsValue;
 
@@ -307,12 +339,10 @@ struct ExtensionModelMaxarMeshVariantsValueJsonWriter {
 };
 
 struct ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValueJsonWriter {
-  using ValueType =
-      CesiumGltf::ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValue;
+  using ValueType = CesiumGltf::ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValue;
 
   static void write(
-      const CesiumGltf::ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValue&
-          obj,
+      const CesiumGltf::ExtensionMeshPrimitiveKhrMaterialsVariantsMappingsValue& obj,
       CesiumJsonWriter::JsonWriter& jsonWriter,
       const CesiumJsonWriter::ExtensionWriterContext& context);
 };
