@@ -64,7 +64,6 @@ target_link_libraries(CesiumGltfReader
         ktx_read
         webp
         webpdecoder
-        turbojpeg
 )
 
 install(TARGETS CesiumGltfReader
