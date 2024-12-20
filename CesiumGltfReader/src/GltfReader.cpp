@@ -5,8 +5,6 @@
 #include "decodeDraco.h"
 #include "registerExtensions.h"
 
-#include <CesiumAsync/IAssetRequest.h>
-#include <CesiumAsync/IAssetResponse.h>
 #include <CesiumGltf/ExtensionKhrTextureBasisu.h>
 #include <CesiumGltf/ExtensionTextureWebp.h>
 #include <CesiumJsonReader/ExtensionReaderContext.h>
@@ -31,7 +29,6 @@
 #include <stb_image_resize.h>
 #include <turbojpeg.h>
 
-using namespace CesiumAsync;
 using namespace CesiumGltf;
 using namespace CesiumGltfReader;
 using namespace CesiumJsonReader;
@@ -329,124 +326,6 @@ GltfReaderResult GltfReader::readGltf(
   }
 
   return result;
-}
-
-/*static*/
-Future<GltfReaderResult> GltfReader::resolveExternalData(
-    AsyncSystem asyncSystem,
-    const std::string& baseUrl,
-    const HttpHeaders& headers,
-    std::shared_ptr<IAssetAccessor> pAssetAccessor,
-    const GltfReaderOptions& options,
-    GltfReaderResult&& result) {
-
-  // TODO: Can we avoid this copy conversion?
-  std::vector<IAssetAccessor::THeader> tHeaders(headers.begin(), headers.end());
-
-  if (!result.model) {
-    return asyncSystem.createResolvedFuture(std::move(result));
-  }
-
-  // Get a rough count of how many external buffers we may have.
-  // Some of these may be data uris though.
-  size_t uriBuffersCount = 0;
-  for (const Buffer& buffer : result.model->buffers) {
-    if (buffer.uri) {
-      ++uriBuffersCount;
-    }
-  }
-
-  for (const Image& image : result.model->images) {
-    if (image.uri) {
-      ++uriBuffersCount;
-    }
-  }
-
-  if (uriBuffersCount == 0) {
-    return asyncSystem.createResolvedFuture(std::move(result));
-  }
-
-  auto pResult = std::make_unique<GltfReaderResult>(std::move(result));
-
-  struct ExternalBufferLoadResult {
-    bool success = false;
-    std::string bufferUri;
-  };
-
-  std::vector<Future<ExternalBufferLoadResult>> resolvedBuffers;
-  resolvedBuffers.reserve(uriBuffersCount);
-
-  // We need to skip data uris.
-  constexpr std::string_view dataPrefix = "data:";
-  constexpr size_t dataPrefixLength = dataPrefix.size();
-
-  for (Buffer& buffer : pResult->model->buffers) {
-    if (buffer.uri && buffer.uri->substr(0, dataPrefixLength) != dataPrefix) {
-      resolvedBuffers.push_back(
-          pAssetAccessor
-              ->get(asyncSystem, Uri::resolve(baseUrl, *buffer.uri), tHeaders)
-              .thenInWorkerThread(
-                  [pBuffer =
-                       &buffer](std::shared_ptr<IAssetRequest>&& pRequest) {
-                    const IAssetResponse* pResponse = pRequest->response();
-
-                    std::string bufferUri = *pBuffer->uri;
-
-                    if (pResponse) {
-                      pBuffer->uri = std::nullopt;
-                      pBuffer->cesium.data = std::vector<std::byte>(
-                          pResponse->data().begin(),
-                          pResponse->data().end());
-                      return ExternalBufferLoadResult{true, bufferUri};
-                    }
-
-                    return ExternalBufferLoadResult{false, bufferUri};
-                  }));
-    }
-  }
-
-  for (Image& image : pResult->model->images) {
-    if (image.uri && image.uri->substr(0, dataPrefixLength) != dataPrefix) {
-      resolvedBuffers.push_back(
-          pAssetAccessor
-              ->get(asyncSystem, Uri::resolve(baseUrl, *image.uri), tHeaders)
-              .thenInWorkerThread(
-                  [pImage = &image,
-                   ktx2TranscodeTargets = options.ktx2TranscodeTargets](
-                      std::shared_ptr<IAssetRequest>&& pRequest) {
-                    const IAssetResponse* pResponse = pRequest->response();
-
-                    std::string imageUri = *pImage->uri;
-
-                    if (pResponse) {
-                      pImage->uri = std::nullopt;
-
-                      ImageReaderResult imageResult =
-                          readImage(pResponse->data(), ktx2TranscodeTargets);
-                      if (imageResult.image) {
-                        pImage->cesium = std::move(*imageResult.image);
-                        return ExternalBufferLoadResult{true, imageUri};
-                      }
-                    }
-
-                    return ExternalBufferLoadResult{false, imageUri};
-                  }));
-    }
-  }
-
-  return asyncSystem.all(std::move(resolvedBuffers))
-      .thenInWorkerThread(
-          [pResult = std::move(pResult)](
-              std::vector<ExternalBufferLoadResult>&& loadResults) mutable {
-            for (auto& bufferResult : loadResults) {
-              if (!bufferResult.success) {
-                pResult->warnings.push_back(
-                    "Could not load the external gltf buffer: " +
-                    bufferResult.bufferUri);
-              }
-            }
-            return std::move(*pResult.release());
-          });
 }
 
 bool isKtx(const gsl::span<const std::byte>& data) {

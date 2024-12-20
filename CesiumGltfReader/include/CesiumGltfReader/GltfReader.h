@@ -2,10 +2,6 @@
 
 #include "CesiumGltfReader/Library.h"
 
-#include <CesiumAsync/AsyncSystem.h>
-#include <CesiumAsync/Future.h>
-#include <CesiumAsync/HttpHeaders.h>
-#include <CesiumAsync/IAssetAccessor.h>
 #include <CesiumGltf/ImageCesium.h>
 #include <CesiumGltf/Ktx2TranscodeTargets.h>
 #include <CesiumGltf/Model.h>
@@ -140,26 +136,6 @@ public:
   GltfReaderResult readGltf(
       const gsl::span<const std::byte>& data,
       const GltfReaderOptions& options = GltfReaderOptions()) const;
-
-  /**
-   * @brief Accepts the result of {@link readGltf} and resolves any remaining
-   * external buffers and images.
-   *
-   * @param asyncSystem The async system to use for resolving external data.
-   * @param baseUrl The base url that all the external uris are relative to.
-   * @param headers The http headers needed to make any external data requests.
-   * @param pAssetAccessor The asset accessor to use to request the external
-   * buffers and images.
-   * @param options Options for how to read the glTF.
-   * @param result The result of the synchronous readGltf invocation.
-   */
-  static CesiumAsync::Future<GltfReaderResult> resolveExternalData(
-      CesiumAsync::AsyncSystem asyncSystem,
-      const std::string& baseUrl,
-      const CesiumAsync::HttpHeaders& headers,
-      std::shared_ptr<CesiumAsync::IAssetAccessor> pAssetAccessor,
-      const GltfReaderOptions& options,
-      GltfReaderResult&& result);
 
   /**
    * @brief Reads an image from a buffer.

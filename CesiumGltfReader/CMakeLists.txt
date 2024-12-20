@@ -56,7 +56,6 @@ target_include_directories(
 
 target_link_libraries(CesiumGltfReader
     PUBLIC
-        CesiumAsync
         CesiumGltf
         CesiumJsonReader
         modp_b64
