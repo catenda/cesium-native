@@ -14,7 +14,6 @@
 
 #include <ktx.h>
 #include <rapidjson/reader.h>
-#include <webp/decode.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -266,13 +265,4 @@ bool isKtx(const gsl::span<const std::byte>& data) {
       {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A};
 
   return memcmp(data.data(), ktxMagic, ktxMagicByteLength) == 0;
-}
-
-bool isWebP(const gsl::span<const std::byte>& data) {
-  if (data.size() < 12) {
-    return false;
-  }
-  const uint32_t magic1 = *reinterpret_cast<const uint32_t*>(data.data());
-  const uint32_t magic2 = *reinterpret_cast<const uint32_t*>(data.data() + 8);
-  return magic1 == 0x46464952 && magic2 == 0x50424557;
 }
