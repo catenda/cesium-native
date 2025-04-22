@@ -129,32 +129,17 @@ endfunction()
 add_subdirectory(extern EXCLUDE_FROM_ALL)
 
 # These libraries override the debug postfix, so re-override it.
-set_target_properties(spdlog PROPERTIES DEBUG_POSTFIX ${CESIUM_DEBUG_POSTFIX})
 set_target_properties(tinyxml2 PROPERTIES DEBUG_POSTFIX ${CESIUM_DEBUG_POSTFIX})
 
 # Public Targets
 add_subdirectory(CesiumUtility)
 add_subdirectory(CesiumGltf)
-add_subdirectory(CesiumGeometry)
-add_subdirectory(CesiumGeospatial)
 add_subdirectory(CesiumJsonReader)
 add_subdirectory(CesiumJsonWriter)
 add_subdirectory(CesiumGltfReader)
 add_subdirectory(CesiumGltfWriter)
-add_subdirectory(CesiumAsync)
 add_subdirectory(Cesium3DTiles)
-add_subdirectory(Cesium3DTilesReader)
 add_subdirectory(Cesium3DTilesWriter)
-add_subdirectory(Cesium3DTilesSelection)
-add_subdirectory(CesiumIonClient)
-
-# Private Targets
-if (CESIUM_TESTS_ENABLED)
-    # enable_testing() MUST be called before add_subdirectory or no tests
-    # will be found by ctest
-    enable_testing()
-    add_subdirectory(CesiumNativeTests)
-endif()
 
 add_subdirectory(doc)
 
@@ -168,22 +153,11 @@ install(DIRECTORY extern/glm/glm
 
 install(TARGETS tinyxml2)
 
-install(TARGETS Async++)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/extern/asyncplusplus/include/async++.h TYPE INCLUDE)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/extern/asyncplusplus/include/async++ TYPE INCLUDE)
-
-install(TARGETS spdlog)
-install(DIRECTORY ${CESIUM_NATIVE_SPDLOG_INCLUDE_DIR}/spdlog DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-
 install(TARGETS ${CESIUM_NATIVE_DRACO_LIBRARY})
 
 install(TARGETS sqlite3)
 
 install(TARGETS modp_b64)
-
-install(TARGETS httplib)
-
-install(TARGETS csprng)
 
 install(TARGETS GSL)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/extern/GSL/include/gsl TYPE INCLUDE)
@@ -194,13 +168,4 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/extern/GSL/include/gsl TYPE INCLUD
 set_target_properties(ktx_read PROPERTIES PUBLIC_HEADER "")
 install(TARGETS ktx_read)
 
-install(TARGETS webpdecoder)
-
-install(DIRECTORY $<TARGET_LINKER_FILE:turbojpeg> TYPE LIB)
-
 install(DIRECTORY ${CESIUM_NATIVE_RAPIDJSON_INCLUDE_DIR}/rapidjson TYPE INCLUDE)
-
-install(TARGETS s2geometry)
-
-install(TARGETS expected-lite)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/extern/expected-lite/include/nonstd TYPE INCLUDE)
