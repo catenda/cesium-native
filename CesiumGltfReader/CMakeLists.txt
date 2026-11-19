@@ -56,16 +56,12 @@ target_include_directories(
 
 target_link_libraries(CesiumGltfReader
     PUBLIC
-        CesiumAsync
         CesiumGltf
         CesiumJsonReader
         modp_b64
         ${CESIUM_NATIVE_DRACO_LIBRARY}
     PRIVATE
         ktx_read
-        webp
-        webpdecoder
-        turbojpeg
 )
 
 install(TARGETS CesiumGltfReader
