@@ -5,6 +5,7 @@ add_subdirectory(GSL)
 
 option(KTX_FEATURE_STATIC_LIBRARY "" on)
 option(KTX_FEATURE_TESTS "" off)
+option(KTX_FEATURE_TOOLS "" off)
 
 # cesium-native uses std::variant features that require iOS 12+. Don't let KTX force
 # our build to use iOS 11, because it won't work.
